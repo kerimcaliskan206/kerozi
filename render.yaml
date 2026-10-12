@@ -6,7 +6,7 @@ services:
     runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: flask --app wsgi:app init-db && gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 1
+    startCommand: flask --app wsgi:app init-db && gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 1 --timeout 60
     healthCheckPath: /health
     envVars:
       # Same as local venv. Verify this is a Python version Render supports.
