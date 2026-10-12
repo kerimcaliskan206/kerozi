@@ -14,7 +14,10 @@ RETRIEVE_PATH = "/payment/iyzipos/checkoutform/auth/ecom/detail"
 
 
 class IyzicoError(Exception):
-    pass
+    def __init__(self, message, details=None):
+        super().__init__(message)
+        # Only non-sensitive diagnostics: status, errorCode, errorMessage, errorGroup, http_status.
+        self.details = details or {}
 
 
 def _price(minor):
@@ -101,9 +104,13 @@ def init_checkout_form(order, customer, package_name, ip):
     try:
         data = resp.json()
     except ValueError:
-        raise IyzicoError(f"iyzico returned HTTP {resp.status_code}")
+        raise IyzicoError(
+            f"iyzico returned HTTP {resp.status_code}", {"http_status": resp.status_code}
+        )
     if data.get("status") != "success":
-        raise IyzicoError(data.get("errorMessage") or "iyzico checkout init failed")
+        details = {k: data.get(k) for k in ("status", "errorCode", "errorMessage", "errorGroup")}
+        details["http_status"] = resp.status_code
+        raise IyzicoError(data.get("errorMessage") or "iyzico checkout init failed", details)
     return data["token"], data["paymentPageUrl"]
 
 

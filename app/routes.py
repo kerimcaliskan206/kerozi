@@ -2,6 +2,7 @@ import logging
 import os
 import re
 
+import requests
 from flask import Blueprint, current_app, jsonify, redirect, request, send_from_directory
 from sqlalchemy.exc import IntegrityError
 from app import db
@@ -142,7 +143,18 @@ def checkout_iyzico(order_id):
     try:
         token, url = init_checkout_form(order, customer, pkg.name_tr, get_client_ip())
     except IyzicoError as e:
+        current_app.logger.error(
+            "iyzico checkout failed order=%s error=%s details=%s",
+            order_id, type(e).__name__, e.details,
+        )
         return jsonify({"error": str(e)}), 502
+    except requests.RequestException as e:
+        # network error (timeout, connection, DNS): log, then keep the previous behavior
+        current_app.logger.error(
+            "iyzico checkout failed order=%s error=%s message=%s",
+            order_id, type(e).__name__, e,
+        )
+        raise
 
     order.provider = "iyzico"
     order.provider_ref = token
