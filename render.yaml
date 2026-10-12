@@ -1,13 +1,12 @@
-# Plan names: "starter" (web) and "basic-256mb" (Postgres) were valid when written.
-# Render renames plans from time to time: verify both in the dashboard before applying.
+# FREE PLANS: the free web service sleeps after 15 minutes of inactivity; the free Postgres
+# expires 30 days after creation and is deleted 14 days later. Upgrade before real sales.
 services:
   - type: web
     name: kerozi
     runtime: python
-    plan: starter
+    plan: free
     buildCommand: pip install -r requirements.txt
-    preDeployCommand: flask --app wsgi:app init-db
-    startCommand: gunicorn wsgi:app --workers 2 --timeout 60
+    startCommand: flask --app wsgi:app init-db && gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 1
     healthCheckPath: /health
     envVars:
       # Same as local venv. Verify this is a Python version Render supports.
@@ -29,5 +28,5 @@ services:
 
 databases:
   - name: kerozi-db
-    plan: basic-256mb
+    plan: free
     ipAllowList: []  # internal connections only (web service in the same region)
