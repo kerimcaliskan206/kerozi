@@ -1,0 +1,9 @@
+.venv/
+instance/
+*.db
+*.bak
+__pycache__/
+.env
+.claude/
+.DS_Store
+public/img/*.png

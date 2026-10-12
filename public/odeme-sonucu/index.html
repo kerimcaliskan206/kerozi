@@ -1,0 +1,22 @@
+<!doctype html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Ödeme Sonucu — Kerozi Technologies</title><meta name="description" content="Kerozi Technologies: web, mobil, yapay zekâ ve iş otomasyonu odaklı bağımsız yazılım geliştirme."><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23080810'/%3E%3Cpath d='M20 14v36M46 16L20 33l26 15' fill='none' stroke='%239e82ff' stroke-width='7'/%3E%3C/svg%3E"><link rel="stylesheet" href="/style.css"></head><body>
+<a class="skip" href="/#hizmetler">İçeriğe geç</a><header><a class="brand" href="/#"><b>KEROZI</b><small>TECHNOLOGIES</small></a><nav aria-label="Ana menü"><a href="/#hizmetler">Hizmetler</a><a href="/#yaklasim">Yaklaşım</a><a href="/#hakkimda">Hakkımızda</a><a href="/fiyatlandirma/">Fiyatlandırma</a><a href="/#iletisim">İletişim</a></nav><div class="header-actions"><a class="mobile-contact" href="/#iletisim">İletişim</a><a class="navcta" href="/fiyatlandirma/">Fiyatlandırma</a></div></header>
+<main class="result-page wrap"><section class="result-card" id="result" aria-live="polite"><p class="eyebrow">ÖDEME SONUCU</p><h1 id="r-title">Ödemeniz kontrol ediliyor.</h1><p class="result-order" id="r-order" hidden></p><p id="r-text">Bu sayfayı kapatmadan birkaç dakika sonra yenileyin veya bizimle iletişime geçin.</p><div class="result-actions" id="r-actions"></div></section></main>
+<script>
+(function(){
+var q=new URLSearchParams(location.search),d=q.get("durum"),s=q.get("siparis");
+var M="mailto:ozlanixdev@gmail.com";
+var T={
+basarili:{t:"Ödemeniz alındı. Teşekkürler!",p:"En kısa sürede bıraktığınız iletişim bilgilerinizle size ulaşacağız.",b:[["Ana sayfaya dön","/","button"]]},
+basarisiz:{t:"Ödeme tamamlanamadı.",p:"Kartınızdan çekim yapıldıysa lütfen bizimle iletişime geçin; yapılmadıysa tekrar deneyebilirsiniz.",b:[["Tekrar dene","/fiyatlandirma/","button"],["İletişim",M,"button secondary"]]},
+bekliyor:{t:"Ödemeniz kontrol ediliyor.",p:"Bu sayfayı kapatmadan birkaç dakika sonra yenileyin veya bizimle iletişime geçin.",b:[]}
+};
+var k=(d==="basarili"||d==="basarisiz")?d:"bekliyor",c=T[k];
+document.getElementById("r-title").textContent=c.t;
+document.getElementById("r-text").textContent=c.p;
+if(k==="basarili"&&s&&/^[0-9]{1,18}$/.test(s)){var o=document.getElementById("r-order");o.textContent="Sipariş no: #"+s;o.hidden=false}
+var a=document.getElementById("r-actions");
+c.b.forEach(function(x){var l=document.createElement("a");l.className=x[2];l.href=x[1];l.textContent=x[0];a.appendChild(l)});
+document.getElementById("result").className="result-card result-"+k;
+})();
+</script>
+<footer><a class="brand" href="/#"><b>KEROZI</b><small>TECHNOLOGIES</small></a><p>© <span id="year">2026</span> Kerozi Technologies</p><a href="/#hakkimda">Bağımsız düşün. Birlikte geliştir.</a></footer></body></html>
